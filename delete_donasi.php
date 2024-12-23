@@ -1,4 +1,7 @@
 <?php
+
+$title = 'Delete Donasi';
+
 include 'config/app.php';
 
 

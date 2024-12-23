@@ -1,6 +1,6 @@
 <?php 
 
-$title = 'Daftar Donatur';
+$title = 'Daftar Kegiatan';
 
 include 'layout/header.php';
 
@@ -8,10 +8,10 @@ $limit = 10; // Jumlah item per halaman
 $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
 $start = ($page > 1) ? ($page * $limit) - $limit : 0;
 
-$total = count(select("SELECT * FROM donasi"));
+$total = count(select("SELECT * FROM kegiatan"));
 $pages = ceil($total / $limit);
 
-$data_donasi = select("SELECT * FROM donasi LIMIT $start, $limit");
+$data_kegiatan = select("SELECT * FROM kegiatan LIMIT $start, $limit");
 ?>
 
 <!DOCTYPE html>
@@ -19,7 +19,7 @@ $data_donasi = select("SELECT * FROM donasi LIMIT $start, $limit");
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Donatur</title>
+    <title>Daftar Kegiatan</title>
     <style>
         table {
             width: 100%;
@@ -32,9 +32,13 @@ $data_donasi = select("SELECT * FROM donasi LIMIT $start, $limit");
             padding: 8px;
             text-align: left;
         }
+        img {
+            max-width: 100px; /* Atur ukuran maksimum gambar */
+            height: auto;
+        }
     </style>
     <script>
-        function searchDonatur() {
+        function searchKegiatan() {
             let input, filter, table, tr, td, i, txtValue;
             input = document.getElementById("search");
             filter = input.value.toUpperCase();
@@ -55,16 +59,16 @@ $data_donasi = select("SELECT * FROM donasi LIMIT $start, $limit");
     </script>
 </head>
 <body>
-    <h1>Daftar Donatur</h1>
-    <a href="add_donasi.php">Tambah Donatur</a>
+    <h1>Daftar Kegiatan</h1>
+    <a href="add_keg.php">Tambah Kegiatan</a>
     <br>
     <br>
-    <input type="text" id="search" placeholder="Search by name" onkeyup="searchDonatur()">
+    <input type="text" id="search" placeholder="Search by name" onkeyup="searchKegiatan()">
     <span>
         <?php if ($total > 0) : ?>
-            <?= $total; ?> Donatur ditemukan
+            <?= $total; ?> Kegiatan ditemukan
         <?php else : ?>
-            Donatur tidak ditemukan
+            Kegiatan tidak ditemukan
         <?php endif; ?>
     </span>
     <br>
@@ -72,25 +76,33 @@ $data_donasi = select("SELECT * FROM donasi LIMIT $start, $limit");
         <thead>
             <tr>
                 <th>No</th>
-                <th>Nama Donatur</th>
-                <th>Pesan</th>
-                <th>Jumlah donasi</th>
+                <th>Nama Kegiatan</th>
+                <th>Deskripsi</th>
                 <th>Tanggal</th>
+                <th>Foto</th>
                 <th>Aksi</th>
             </tr>
         </thead>
         <tbody id="table-body">
             <?php $no = $start + 1; ?>
-            <?php foreach ($data_donasi as $donasi) : ?>
+            <?php foreach ($data_kegiatan as $kegiatan) : ?>
                 <tr>
                     <td><?= $no++; ?></td>
-                    <td><?= !empty($donasi['nama_donatur']) ? htmlspecialchars($donasi['nama_donatur']) : 'Tanpa nama'; ?></td>
-                    <td><?= htmlspecialchars($donasi['pesan']); ?></td>
-                    <td>Rp<?= number_format($donasi['jumlah_donasi'], 2, ',', '.'); ?></td>
-                    <td><?= date('d/m/Y | h:i:s', strtotime($donasi['tanggal'])) ?></td>
+                    <td><?= htmlspecialchars($kegiatan['nama_keg']); ?></td>
+                    <td><?= htmlspecialchars($kegiatan['deskripsi']); ?></td>
+                    <td><?= date('d/m/Y', strtotime($kegiatan['tgl_keg'])) ?></td>
                     <td>
-                        <a href="edit_donasi.php?id_donatur=<?= $donasi['id_donatur']; ?>">edit</a>
-                        <a href="delete_donasi.php?id_donatur=<?= $donasi['id_donatur']; ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus donasi ini?')">delete</a>
+                    <?php 
+                    $photos = explode(',', $kegiatan['foto']);
+                    foreach ($photos as $photo) : ?>
+                        <a href="assets/img/<?= trim($photo); ?>">
+                            <img src="assets/img/<?= trim($photo); ?>" alt="Foto Kegiatan">
+                        </a>
+                    <?php endforeach; ?>
+                    </td>
+                    <td>
+                        <a href="edit_keg.php?id_kegiatan=<?= $kegiatan['id_kegiatan']; ?>">edit</a>
+                        <a href="delete_keg.php?id_kegiatan=<?= $kegiatan['id_kegiatan']; ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus kegiatan ini?')">delete</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -117,6 +129,3 @@ $data_donasi = select("SELECT * FROM donasi LIMIT $start, $limit");
 </body>
 </html>
 
-<?php
-include 'layout/footer.php';
-?>

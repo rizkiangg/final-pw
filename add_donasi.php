@@ -1,4 +1,7 @@
 <?php
+
+$title = 'Tambah Donatur';
+
 include 'layout/header.php'; 
 
 if (isset($_POST['tambah'])) {
@@ -17,7 +20,7 @@ if (isset($_POST['tambah'])) {
 ?>
 
 <style>
-    input[type=number]::-webkit-inner-spin-button, 
+    input[type=number]::-webkit-inner-spin-button,
     input[type=number]::-webkit-outer-spin-button { 
         -webkit-appearance: none;
         -moz-appearance: none;
@@ -32,7 +35,23 @@ if (isset($_POST['tambah'])) {
     <form action="" method="post">
         <div>
             <label for="nama_donatur">Nama Donatur</label>
-            <input type="text" name="nama_donatur" id="nama_donatur" placeholder="Nama Donatur..." required>
+            <div>
+                <input type="radio" name="nama_donatur_option" id="tanpa_nama" value="Tanpa nama" required onclick="toggleNamaDonatur(false)">
+                <label for="tanpa_nama">Tanpa Nama</label>
+                <br>
+                <input type="radio" name="nama_donatur_option" id="dengan_nama" value="Dengan nama" required onclick="toggleNamaDonatur(true)">
+                <label for="dengan_nama">Dengan Nama</label>
+                <br>
+                <input type="text" name="nama_donatur" id="nama_donatur" placeholder="Nama Donatur..." required disabled>
+            </div>
+            <script>
+                function toggleNamaDonatur(enable) {
+                    document.getElementById('nama_donatur').disabled = !enable;
+                    if (!enable) {
+                        document.getElementById('nama_donatur').value = 'Tanpa nama';
+                    }
+                }
+            </script>
         </div>
         <div>
             <label for="pesan">Pesan</label>

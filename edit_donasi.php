@@ -1,4 +1,7 @@
 <?php
+
+$title = 'Edit Donatur';
+
 include 'layout/header.php';
 
 $id_donatur = (int)$_GET['id_donatur'];
