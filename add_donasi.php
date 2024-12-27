@@ -2,13 +2,13 @@
 
 $title = 'Tambah Donatur';
 
-include 'layout/header.php'; 
+include 'layout/header.php';
 
 if (isset($_POST['tambah'])) {
     if (tambah_donatur($_POST) > 0) {
         echo "<script>
             alert('Data berhasil ditambahkan');
-            document.location.href = 'index.php';
+            document.location.href = '../../index.php';
         </script>";
     } else {
         echo "<script>

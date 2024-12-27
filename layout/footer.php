@@ -1,22 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <style>
-        .footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 10px 0;
-            position: fixed;
-            left: 0;
+
+<style>
+      #copyright{
             bottom: 0;
             width: 100%;
+            position: fixed;
+            height:50px;
+            line-height:50px;
+            background:#3c3a3a;
+            color:#fff;
+            padding-left: 10px;
         }
-    </style>
-</head>
-<body>
-    <div class="footer">
-        <p>&copy; <?php echo date("Y"); ?> Your Company. All rights reserved.</p>
-    </div>
-</body>
-</html>
+</style>
+
+<div id="copyright">
+    &copy; <?php echo date("Y"); ?> Your Company. All rights reserved.
+</div>

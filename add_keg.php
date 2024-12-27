@@ -16,7 +16,7 @@ if (isset($_POST['tambah'])) {
             alert('Data gagal ditambahkan');
             document.location.href = 'kegiatan.php';
         </script>";
-    }
+    } 
 }
 
 $tittle = "Tambah Kegiatan";
@@ -47,8 +47,8 @@ $tittle = "Tambah Kegiatan";
     
     <form action="" method="post" enctype="multipart/form-data">
         <div>
-            <label for="nama_kegiatan">Nama Kegiatan</label>
-            <input type="text" name="nama_kegiatan" id="nama_kegiatan" placeholder="Nama Kegiatan..." required>
+            <label for="nama_keg">Nama Kegiatan</label>
+            <input type="text" name="nama_keg" id="nama_keg" placeholder="Nama Kegiatan..." required>
         </div>
         <div>
             <label for="deskripsi">Deskripsi</label>
@@ -63,8 +63,8 @@ $tittle = "Tambah Kegiatan";
             <input type="text" name="lokasi" id="lokasi" placeholder="Lokasi..." required>
         </div>
         <div>
-            <label for="jenis_kegiatan">Jenis Kegiatan</label>
-            <select name="jenis_kegiatan" id="jenis_kegiatan" required>
+            <label for="jenis_keg">Jenis Kegiatan</label>
+            <select name="jenis_keg" id="jenis_keg" required>
                 <option value="Keagamaan">Keagamaan</option>
                 <option value="Kewarganegaraan">Kewarganegaraan</option>
                 <option value="Hiburan">Hiburan</option>
@@ -75,7 +75,8 @@ $tittle = "Tambah Kegiatan";
         </div>
         <div>
             <label for="foto">Foto</label>
-            <input type="file" name="foto[]" id="foto" multiple required>
+            <input type="file" name="foto[]" id="foto" multiple onchange="previewImage()">
+            <div class="preview"></div>
         </div>
         <div>
             <label for="budget">Budget</label>
@@ -84,6 +85,33 @@ $tittle = "Tambah Kegiatan";
         <button type="submit" name="tambah">Tambah</button>
     </form>
 </div>
+
+<script>
+    function previewImage() {
+        const foto = document.querySelector('#foto');
+        const preview = document.querySelector('.preview');
+
+        preview.innerHTML = '';
+
+        if (foto.files) {
+            [...foto.files].forEach(file => {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.style.width = '100px';
+                    img.style.height = '100px';
+                    img.style.objectFit = 'cover';
+
+                    preview.appendChild(img);
+                }
+
+                reader.readAsDataURL(file);
+            });
+        }
+    }
+</script>
 
 <?php
 include 'layout/footer.php';

@@ -51,16 +51,16 @@ if (isset($_POST['ubah'])) {
         gap: .5rem;
     }
 
-    img {
+    .preview img {
         max-width: 100px;
         height: auto;
+        margin-right: 10px;
     }
 </style>
 
-<div>
+<div style="margin-bottom: 5%;">
     <h1>Edit Kegiatan</h1>
-    <input type="text" value="<?= htmlspecialchars($kegiatan['id_kegiatan']); ?>" hidden>
-    <input type="text" value="<?= htmlspecialchars($kegiatan['foto']); ?>" hidden>
+    
     <form action="" method="post" enctype="multipart/form-data">
         <input type="hidden" name="id_kegiatan" value="<?= htmlspecialchars($kegiatan['id_kegiatan']) ?>">
         <div>
@@ -88,12 +88,16 @@ if (isset($_POST['ubah'])) {
         </div>
         <div>
             <label for="foto">Foto</label>
-            <input type="file" name="foto" id="foto">
-            <?php if (!empty($kegiatan['foto'])) : ?>
-                <img src="assets/img/<?= $kegiatan['foto']; ?>" alt="Foto Kegiatan">
-            <?php else : ?>
-                Foto tidak tersedia
-            <?php endif; ?>
+            <input type="file" name="foto[]" id="foto" multiple onchange="previewImages()">
+            <div class="preview" id="preview">
+                <?php if (!empty($kegiatan['foto'])) : ?>
+                    <?php foreach (explode(',', $kegiatan['foto']) as $foto) : ?>
+                        <img src="assets/img/<?= htmlspecialchars($foto); ?>" alt="Foto Kegiatan">
+                    <?php endforeach; ?>
+                <?php else : ?>
+                    Foto tidak tersedia
+                <?php endif; ?>
+            </div>
         </div>
         <div>
             <label for="deskripsi">Deskripsi</label>
@@ -106,3 +110,28 @@ if (isset($_POST['ubah'])) {
         <button type="submit" name="ubah">Edit</button>
     </form>
 </div>
+
+<script>
+    function previewImages() {
+        var preview = document.getElementById('preview');
+        preview.innerHTML = '';
+        var files = document.getElementById('foto').files;
+
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                var img = document.createElement('img');
+                img.src = e.target.result;
+                preview.appendChild(img);
+            }
+
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+
+<?php
+include 'layout/footer.php';
+?>
