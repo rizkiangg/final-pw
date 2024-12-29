@@ -2,7 +2,9 @@
 include '../config/app.php';
 
 $card = select("SELECT * FROM kegiatan LIMIT 2");
+$carousel = select("SELECT * FROM kegiatan");
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,6 +13,15 @@ $card = select("SELECT * FROM kegiatan LIMIT 2");
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link href="css/style.css" rel="stylesheet">
+    <style>
+        .carousel-container::-webkit-scrollbar {
+            display: none;
+        }
+        .carousel-container {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
 </head>
 <body>
     <div class="p-3 content-center bg-[#EAE3DE] sticky top-0 z-50">
@@ -74,12 +85,52 @@ Mari bergabung bersama kami untuk membangun masa depan yang lebih baik, penuh ha
                     <?php endif; ?>
                 <?php endforeach; ?>
             </div>
+            <div class="mt-10" id="carousel">
+                <h1 class="text-xl">Kegiatan Lain</h1>
+                <div class="relative mt-5">
+                    <button id="prev" class="absolute left-0 w-9 top-1/2 transform -translate-y-1/2 opacity-75 bg-[#314E52] text-[#EAE3DE] p-2 rounded-full ml-10">‹</button>
+                    <div class="carousel-container flex space-x-4 py-4 overflow-x-auto">
+                        <?php foreach (array_slice($carousel, 0, 5) as $kegiatan) : ?>
+                            <div class="carousel-card bg-[#EAE3DE] text-[#314E52] rounded-lg shadow-md p-4 w-80 flex-shrink-0">
+                                <?php 
+                                $photos = explode(',', $kegiatan['foto']);
+                                $firstPhoto = trim($photos[0]);
+                                ?>
+                                <img src="../assets/img/<?= htmlspecialchars($firstPhoto); ?>" alt="Foto Kegiatan" class="w-full h-40 object-cover rounded-md mb-4">
+                                <h2 class="text-2xl font-bold mb-2 truncate"><?= htmlspecialchars($kegiatan['nama_keg']); ?></h2>
+                                <p class="text-lg text-[#314E52] mb-4"><?= htmlspecialchars($kegiatan['lokasi']); ?></p>
+                                <p class="text-[#314E52] line-clamp-3"><?= htmlspecialchars($kegiatan['deskripsi']); ?></p>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <button id="next" class="absolute right-0 top-1/2 transform -translate-y-1/2 mr-10 opacity-75 bg-[#314E52] w-9 text-[#EAE3DE] p-2 rounded-full">›</button>
+                </div>
+            </div>
             <div class="mt-10 space-x-8 flex justify-end">
                 <a href="#" class="py-2 px-11 bg-[#EAE3DE] rounded-sm text-[#314E52] content-center">Dana Masuk</a>
                 <a href="#" class="py-2 px-11 bg-[#EAE3DE] rounded-sm text-[#314E52] content-center">Kegiatan Lainnya</a>
             </div>
         </div>
     </div>
+    <script>
+        const prevButton = document.getElementById('prev');
+        const nextButton = document.getElementById('next');
+        const carouselContainer = document.querySelector('.carousel-container');
+
+        prevButton.addEventListener('click', () => {
+            carouselContainer.scrollBy({
+                left: -carouselContainer.clientWidth,
+                behavior: 'smooth'
+            });
+        });
+
+        nextButton.addEventListener('click', () => {
+            carouselContainer.scrollBy({
+                left: carouselContainer.clientWidth,
+                behavior: 'smooth'
+            });
+        });
+    </script>
 </body>
 </html>
 <?php
