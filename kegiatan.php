@@ -14,55 +14,10 @@ $pages = ceil($total / $limit);
 $data_kegiatan = select("SELECT * FROM kegiatan LIMIT $start, $limit");
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daftar Kegiatan</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        table, th, td {
-            border: 1px solid black;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-        img {
-            max-width: 100px; /* Atur ukuran maksimum gambar */
-            height: auto;
-        }
-    </style>
-    <script>
-        function searchKegiatan() {
-            let input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById("search");
-            filter = input.value.toUpperCase();
-            table = document.querySelector("table");
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td")[1];
-                if (td) {
-                    txtValue = td.textContent || td.innerText;
-                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = "";
-                    } else {
-                        tr[i].style.display = "none";
-                    }
-                }       
-            }
-        }
-    </script>
-</head>
-<body>
-    <h1>Daftar Kegiatan</h1>
-    <a href="add_keg.php">Tambah Kegiatan</a>
-    <br>
-    <br>
+<div class="container mx-auto p-4">
+    <h1 class="text-2xl font-bold mb-4">Daftar Kegiatan</h1>
+    <a href="add_keg.php" class="text-blue-500 hover:underline">Tambah Kegiatan</a>
+    <br><br>
     <input type="text" id="search" placeholder="Search by name" onkeyup="searchKegiatan()">
     <span>
         <?php if ($total > 0) : ?>
@@ -72,37 +27,37 @@ $data_kegiatan = select("SELECT * FROM kegiatan LIMIT $start, $limit");
         <?php endif; ?>
     </span>
     <br>
-    <table>
+    <table class="min-w-full bg-white border border-gray-200">
         <thead>
-            <tr>
-                <th>No</th>
-                <th>Nama Kegiatan</th>
-                <th>Deskripsi</th>
-                <th>Tanggal</th>
-                <th>Foto</th>
-                <th>Aksi</th>
+            <tr class="bg-gray-800 text-white">
+                <th class="py-2 px-4 border-b">No</th>
+                <th class="py-2 px-4 border-b">Nama Kegiatan</th>
+                <th class="py-2 px-4 border-b">Deskripsi</th>
+                <th class="py-2 px-4 border-b">Tanggal</th>
+                <th class="py-2 px-4 border-b">Foto</th>
+                <th class="py-2 px-4 border-b">Aksi</th>
             </tr>
         </thead>
         <tbody id="table-body">
             <?php $no = $start + 1; ?>
             <?php foreach ($data_kegiatan as $kegiatan) : ?>
-                <tr>
-                    <td><?= $no++; ?></td>
-                    <td><?= htmlspecialchars($kegiatan['nama_keg']); ?></td>
-                    <td><?= htmlspecialchars($kegiatan['deskripsi']); ?></td>
-                    <td><?= date('d/m/Y', strtotime($kegiatan['tgl_keg'])) ?></td>
-                    <td>
-                    <?php 
-                    $photos = explode(',', $kegiatan['foto']);
-                    foreach ($photos as $photo) : ?>
-                        <a href="assets/img/<?= trim($photo); ?>">
-                            <img src="assets/img/<?= trim($photo); ?>" alt="Foto Kegiatan">
-                        </a>
-                    <?php endforeach; ?>
+                <tr class="hover:bg-gray-100">
+                    <td class="py-2 px-4 border-b"><?= $no++; ?></td>
+                    <td class="py-2 px-4 border-b"><?= htmlspecialchars($kegiatan['nama_keg']); ?></td>
+                    <td class="py-2 px-4 border-b"><?= htmlspecialchars($kegiatan['deskripsi']); ?></td>
+                    <td class="py-2 px-4 border-b"><?= date('d/m/Y', strtotime($kegiatan['tgl_keg'])) ?></td>
+                    <td class="py-2 px-4 border-b">
+                        <?php 
+                        $photos = explode(',', $kegiatan['foto']);
+                        foreach ($photos as $photo) : ?>
+                            <a href="assets/img/<?= trim($photo); ?>" class="block mb-2">
+                                <img src="assets/img/<?= trim($photo); ?>" alt="Foto Kegiatan" class="h-20 w-20 object-cover">
+                            </a>
+                        <?php endforeach; ?>
                     </td>
-                    <td>
-                        <a href="edit_keg.php?id_kegiatan=<?= $kegiatan['id_kegiatan']; ?>">edit</a>
-                        <a href="delete_keg.php?id_kegiatan=<?= $kegiatan['id_kegiatan']; ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus kegiatan ini?')">delete</a>
+                    <td class="py-2 px-4 border-b">
+                        <a href="edit_keg.php?id_kegiatan=<?= $kegiatan['id_kegiatan']; ?>" class="text-blue-500 hover:underline">edit</a>
+                        <a href="delete_keg.php?id_kegiatan=<?= $kegiatan['id_kegiatan']; ?>" onclick="return confirm('Apakah Anda yakin ingin menghapus kegiatan ini?')" class="text-red-500 hover:underline">delete</a>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -110,22 +65,24 @@ $data_kegiatan = select("SELECT * FROM kegiatan LIMIT $start, $limit");
     </table>
 
     <?php if ($total > $limit) : ?>
-    <div>
+    <div class="mt-4">
         <?php if ($page > 1) : ?>
-            <a href="?page=<?= $page - 1; ?>">Previous</a>
+            <a href="?page=<?= $page - 1; ?>" class="text-blue-500 hover:underline">Previous</a>
         <?php endif; ?>
         <?php for ($i = 1; $i <= $pages; $i++) : ?>
             <?php if ($i == $page) : ?>
-                <a href="?page=<?= $i; ?>" style="font-weight: bold;"><?= $i; ?></a>
+                <a href="?page=<?= $i; ?>" class="font-bold text-blue-500"><?= $i; ?></a>
             <?php else : ?>
-                <a href="?page=<?= $i; ?>"><?= $i; ?></a>
+                <a href="?page=<?= $i; ?>" class="text-blue-500 hover:underline"><?= $i; ?></a>
             <?php endif; ?>
         <?php endfor; ?>
         <?php if ($page < $pages) : ?>
-            <a href="?page=<?= $page + 1; ?>">Next</a>
+            <a href="?page=<?= $page + 1; ?>" class="text-blue-500 hover:underline">Next</a>
         <?php endif; ?>
     </div>
     <?php endif; ?>
-</body>
-</html>
+</div>
 
+<?php
+include 'layout/footer.php';
+?>

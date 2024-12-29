@@ -3,20 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Navbar with Tailwind CSS</title>
-    <link href="../styles.css" rel="stylesheet">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-    <nav class="bg-gray-800 p-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <a href="#" class="text-white text-lg font-semibold">MyWebsite</a>
-            <div class="space-x-4">
-                <a href="#" class="text-gray-300 hover:text-white">Home</a>
-                <a href="#" class="text-gray-300 hover:text-white">About</a>
-                <a href="#" class="text-gray-300 hover:text-white">Services</a>
-                <a href="#" class="text-gray-300 hover:text-white">Contact</a>
+<body >
+    <div class="p-3 content-center bg-[#EAE3DE]">
+        <div class=" content-center mx-32 flex justify-between">
+            <img src="../assets/icons/navLogo.svg" width="216.62" class="cursor-pointer" alt="logo" onclick="document.location.href = 'homepage.php'">
+            <div class="flex space-x-12 text-[#314E52] text-xl">
+                <a href="#" class="cursor-pointer content-center">Contact</a>
+                <a href="#" class="cursor-pointer content-center">About</a>
+                <a href="#" class="cursor-pointer content-center">Login</a>
             </div>
         </div>
-    </nav>
+</div>
 </body>
 </html>
