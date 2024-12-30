@@ -1,4 +1,14 @@
-<?php 
+<?php
+session_start();
+
+// Check if the user is logged in and their level
+if (!isset($_SESSION['loggedin']) || $_SESSION['level'] != 1) {
+    echo "<script>
+    alert('Access denied');
+    document.location.href = 'homepage.php';
+    </script>";
+    exit;
+}
 
 $title = 'Daftar Kegiatan';
 
@@ -82,6 +92,27 @@ $data_kegiatan = select("SELECT * FROM kegiatan LIMIT $start, $limit");
     </div>
     <?php endif; ?>
 </div>
+
+<script>
+    function searchKegiatan() {
+        let input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("search");
+        filter = input.value.toUpperCase();
+        table = document.querySelector("table");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }       
+        }
+    }
+</script>
 
 <?php
 include 'layout/footer.php';

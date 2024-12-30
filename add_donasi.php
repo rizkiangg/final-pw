@@ -1,4 +1,14 @@
 <?php
+session_start();
+
+// Check if the user is logged in and their level
+if (!isset($_SESSION['loggedin']) || $_SESSION['level'] != 1) {
+    echo "<script>
+    alert('Access denied');
+    document.location.href = 'daftar_donasi.php';
+    </script>";
+    exit;
+}
 
 $title = 'Tambah Donasi';
 
@@ -8,12 +18,12 @@ if (isset($_POST['tambah'])) {
     if (tambah_donatur($_POST) > 0) {
         echo "<script>
             alert('Data berhasil ditambahkan');
-            document.location.href = 'index.php';
+            document.location.href = 'daftar_donasi.php';
         </script>";
     } else {
         echo "<script>
             alert('Data gagal ditambahkan');
-            document.location.href = 'index.php';
+            document.location.href = 'daftar_donasi.php';
         </script>";
     }
 }

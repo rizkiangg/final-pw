@@ -1,4 +1,14 @@
 <?php
+session_start();
+
+// Check if the user is logged in and their level
+if (!isset($_SESSION['loggedin']) || $_SESSION['level'] != 1) {
+    echo "<script>
+    alert('Access denied');
+    document.location.href = 'daftar_donasi.php';
+    </script>";
+    exit;
+}
 
 $title = 'Edit Donatur';
 
@@ -12,18 +22,16 @@ if (isset($_POST['ubah'])) {
     if (update_donatur($_POST) > 0) {
         echo "<script>
             alert('Data berhasil diubah');
-            document.location.href = 'index.php';
+            document.location.href = 'daftar_donasi.php';
         </script>";
     } else {
         echo "<script>
             alert('Data gagal diubah');
-            document.location.href = 'index.php';
+            document.location.href = 'daftar_donasi.php';
         </script>";
     }
 }
 ?>
-
-
 
 <div class="container mx-auto p-4">
     <h1 class="text-2xl font-bold mb-4">Edit Donatur</h1>
